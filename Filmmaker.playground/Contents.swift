@@ -63,7 +63,7 @@ class FirstViewController : UIViewController {
         textoInicial.text = "OI, SOU ROTEIRISTA \nE ME DIVIRTO FAZENDO \nFILMES!"
         textoInicial.numberOfLines = 3
         textoInicial.textColor = #colorLiteral(red: 0.0862745098, green: 0.1450980392, blue: 0.4117647059, alpha: 1)
-//        textoInicial.font = UIFont.systemFont(ofSize: 30)
+        //        textoInicial.font = UIFont.systemFont(ofSize: 30)
         textoInicial.font = UIFont(name: "SF Compact Display", size: 30)
         
         let textoInicial2 = UILabel()
@@ -72,7 +72,8 @@ class FirstViewController : UIViewController {
         textoInicial2.numberOfLines = 4
         textoInicial2.textColor = #colorLiteral(red: 0.0862745098, green: 0.1450980392, blue: 0.4117647059, alpha: 1)
         textoInicial2.font = UIFont.systemFont(ofSize: 27)
-//        textoInicial2.font = UIFont(name: "SF Compact Display", size: 27)
+        //        textoInicial2.font = SFCompactDisplay.semibold.font(size:27)
+        //        textoInicial2.font = UIFont(name: "SF Compact Display", size: 27)
         
         view.addSubview(telaInicial)
         view.addSubview(buttonPlay)
@@ -83,22 +84,21 @@ class FirstViewController : UIViewController {
 }
 
 
-class SecondViewController : UIViewController {
-//    UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+class SecondViewController : UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
-//    let cartaCollection = UICollectionView()
-//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return 6
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Carta", for: indexPath) as? Carta else{
-//            fatalError("nao foi possivel acessar a celula")
-//
-//        }
-//        cell.profissao.text = "Diretor de Fotografia"
-//        return cell
-//    }
+    var cartaCollection: UICollectionView?
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 6
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Carta", for: indexPath) as? Carta else{
+            fatalError("nao foi possivel acessar a celula")
+            
+        }
+        cell.profissao.text = "Diretor de Fotografia"
+        return cell
+    }
     
     
     @IBAction func touchedButton() {
@@ -106,12 +106,11 @@ class SecondViewController : UIViewController {
     }
     
     override func loadView() {
+        print("load")
         
         let view = UIView()
         self.view = view
-        print ("Chegou na load view da SecondView")
         view.backgroundColor = .white
-        
         let imageHeader = UIImageView(frame: CGRect(x: -13 , y:-10, width: 776.62, height: 277))
         imageHeader.image = UIImage(named: "header.png")
         
@@ -141,10 +140,18 @@ class SecondViewController : UIViewController {
         
         buttonCarta.addTarget(self, action: #selector(SecondViewController.touchedButton), for: .touchUpInside)
         
-//        cartaCollection.frame = CGRect(x: 87, y: 277, width: 560, height: 321)
-//        cartaCollection.register(Carta.self, forCellWithReuseIdentifier: "Carta")
-//
-//        view.addSubview(cartaCollection)
+        let frame = self.view.frame
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        cartaCollection = UICollectionView(frame: frame, collectionViewLayout: layout)
+        cartaCollection?.delegate = self
+        cartaCollection?.dataSource = self
+        self.cartaCollection?.backgroundColor = .white
+        self.cartaCollection?.register(Carta.self, forCellWithReuseIdentifier: "Carta")
+        
+        cartaCollection?.alwaysBounceVertical = false
+        
+        view.addSubview(cartaCollection!)
         view.addSubview(imageHeader)
         view.addSubview(imageBalao)
         view.addSubview(missao1)
@@ -156,24 +163,16 @@ class SecondViewController : UIViewController {
     }
 }
 
-//        let header: UIImageView = UIImageView()
-//        let cartas: UIButton = UIButton()
-//        let missao: UILabel = UILabel()
-
-
-//        var headerMissao1: Header = Header()
-//        var headerMissao2: Header = Header()
-//        var headerMissao3: Header = Header()
-//        var headerMissao4: Header = Header()
-//        var headerMissao5: Header = Header()
-//        var headerMissao6: Header = Header()
-//        var listaHeaders = [Header()]
-//
-//        override func loadView(){
-//            for i in 1...6{
-
-
 // Present the view controller in the Live View window
+public enum SFCompactDisplay: String {
+    case typewriter = "SF-Compact-Display"
+    case bold = "SF-Compact-Display-Bold"
+    case semibold = "SF-Compact-Display-SemiBold"
+    public func font(size: CGFloat) -> UIFont {
+        return UIFont(name: self.rawValue, size: size)!
+    }
+}
+
 let viewController = FirstViewController()
 let vc = FirstViewController(screenType: .other(width: 750, height: 1024) , isPortrait: true)
 let navigationController = UINavigationController(screenType: .other(width: 750, height: 1024) , isPortrait: true)

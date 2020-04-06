@@ -15,5 +15,20 @@ public class header{
         self.titulo.text = "Missão 1"
         self.texto.text = "Encontre a pessoa responsável por transformar o roteiro em vídeo através de cãmeras, lentes e iluminação"
         
+        //        let header: UIImageView = UIImageView()
+        //        let cartas: UIButton = UIButton()
+        //        let missao: UILabel = UILabel()
+
+
+        //        var headerMissao1: Header = Header()
+        //        var headerMissao2: Header = Header()
+        //        var headerMissao3: Header = Header()
+        //        var headerMissao4: Header = Header()
+        //        var headerMissao5: Header = Header()
+        //        var headerMissao6: Header = Header()
+        //        var listaHeaders = [Header()]
+        //
+        //        override func loadView(){
+        //            for i in 1...6{
     }
 }
