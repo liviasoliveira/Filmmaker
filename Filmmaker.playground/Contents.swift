@@ -9,11 +9,16 @@ CTFontManagerRegisterFontsForURL(cfURL, CTFontManagerScope.process, nil)
 
 class FirstViewController : UIViewController {
     
+    let textoInicial = UILabel()
+    let textoInicial2 = UILabel()
+    
+    
     @IBAction func touchedButtonPlay() {
         print("tocou botão dirigir filme")
         let vc = SecondViewController(screenType: .other(width: 750, height: 1024), isPortrait: true)
-        //navigationController?.popViewController(animated: true)
         navigationController?.pushViewController(vc, animated: true)
+    
+        
     }
     
     override func loadView() {
@@ -32,16 +37,14 @@ class FirstViewController : UIViewController {
         
         buttonPlay.addTarget(self, action: #selector(FirstViewController.touchedButtonPlay), for: .touchUpInside)
         
-        let textoInicial = UILabel()
-        textoInicial.frame = CGRect(x: 80, y: 60, width: 354, height: 117)
+        textoInicial.frame = CGRect(x: 80, y: 100, width: 354, height: 117)
         textoInicial.text = "OI, SOU ROTEIRISTA \nE ME DIVIRTO FAZENDO \nFILMES!"
         textoInicial.numberOfLines = 3
         textoInicial.textColor = #colorLiteral(red: 0.0862745098, green: 0.1450980392, blue: 0.4117647059, alpha: 1)
-        //        textoInicial.font = UIFont.systemFont(ofSize: 30)
         textoInicial.font = UIFont(name: "SF Compact Display", size: 30)
         
-        let textoInicial2 = UILabel()
-        textoInicial2.frame = CGRect(x: 80, y: 190, width: 400, height: 150)
+        
+        textoInicial2.frame = CGRect(x: 80, y: 190, width: 400, height: 180)
         textoInicial2.text = "Mas preciso de sua ajuda \npara montar uma equipe.\nVocê pode dirigir esse \nfilme?"
         textoInicial2.numberOfLines = 4
         textoInicial2.textColor = #colorLiteral(red: 0.0862745098, green: 0.1450980392, blue: 0.4117647059, alpha: 1)
@@ -49,16 +52,32 @@ class FirstViewController : UIViewController {
         
         view.addSubview(telaInicial)
         view.addSubview(buttonPlay)
-        view.addSubview(textoInicial)
         view.addSubview(textoInicial2)
+        view.addSubview(textoInicial)
+        
+    
         self.view = view
+        
+        
     }
-}
-
+    
+        
+         override func viewDidAppear(_ animated: Bool) {
+            super.viewDidAppear(animated)
+           UIView.animate(withDuration: 2, animations: {
+                 self.textoInicial.frame.origin.y = 50
+           }, completion:{ finished in UIView.animate(withDuration: 3, animations: {
+                self.textoInicial2.frame.origin.y = 165
+           })})
+           
+            self.view.layoutIfNeeded()
+                
+            }
+    }
 
 class SecondViewController : UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
-    var firstRound = true
+    //var firstRound = true
     
     var cartaCollection: UICollectionView?
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -80,12 +99,14 @@ class SecondViewController : UIViewController, UICollectionViewDelegate, UIColle
         
         cell.imageCareer.image = UIImage(named: career.image)
         cell.labelCareer.text = career.name
+        cell.labelCareer.isHidden = true
+        cell.imageCareer.isHidden = true
         
-        if firstRound {
-            cell.labelCareer.isHidden = true
-            cell.imageCareer.isHidden = true
-            cell.checkView.isHidden = true
-        }
+//        if firstRound {
+//            cell.labelCareer.isHidden = true
+//            cell.imageCareer.isHidden = true
+//            cell.checkView.isHidden = true
+//        }
         
         //        cell.addTarget(self, action: #selector(virarCarta), for: .touchUpInside)
         //        self.view.frame = CGRect(x: career.x, career.y: y, width: 273, height: 321)
@@ -98,26 +119,77 @@ class SecondViewController : UIViewController, UICollectionViewDelegate, UIColle
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        firstRound = false
-        let career = Career.shared[indexPath.row]
+        //firstRound = false
+        //let career = Career.shared[indexPath.row]
         guard let cell = collectionView.cellForItem(at: indexPath) as? Carta else{
             fatalError("nao foi possivel acessar a celula")
         }
         
-        cell.imageCareer.image = UIImage(named: career.image)
-        cell.labelCareer.text = career.name
-        cell.virarCarta()
-        collectionView.reloadItems(at: [indexPath])
+//        cell.imageCareer.image = UIImage(named: career.image)
+//        cell.labelCareer.text = career.name
+        virarCarta(celula: cell)
+        //collectionView.reloadItems(at: [indexPath])
     }
+    func virarCarta(celula: Carta){
+        let carta = celula
+        if carta.isFacingDown {
+            carta.view.setImage(carta.backgroundChosen, for: .normal)
+            carta.labelCareer.isHidden = false
+            carta.imageCareer.isHidden = false
+            carta.isFacingDown = false
+            
+        } else {
+            if (carta.labelCareer.text == carreira){
+                carta.imageCareer.isHidden = true
+                carta.addSubview(carta.checkView)
+                //self.checkView.isHidden = false
+                //carta.labelCareer.isHidden = true
+                carta.labelCareer.font = UIFont(name: "SF Compact Display", size: 25)
+                carta.labelCareer.frame = CGRect(x: 67, y: 131, width: 155, height: 60)
+                carta.labelCareer.textAlignment = .left
+                atualizar()
+                carta.isUserInteractionEnabled = false
+                
+            } else {
+                carta.view.setImage(carta.background, for: .normal)
+                carta.labelCareer.isHidden = true
+                carta.imageCareer.isHidden = true
+                carta.isFacingDown = true
+            }
+        }
+    }
+
+    func atualizar(){
+        posicao = posicao + 1
+        if posicao <= 5 {
+            missao1.text = dados[posicao].number
+            textomissao1.text = dados[posicao].text
+            carreira = dados[posicao].career
     
+        } else {
+            let vc = ThirdViewController(screenType: .other(width: 750, height: 1024), isPortrait: true)
+            navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+
     @IBAction func touchedButton() {
         print("apertou na carta")
         
     }
     
+    let dados: [Mission] = Mission.shared
+    var posicao = 0
+    //var carreira: String
+    lazy var carreira: String = {
+        return self.dados[self.posicao].career
+    }()
+
+    let missao1 = UILabel()
+    let textomissao1 = UILabel()
+    
+    
     override func loadView() {
         print("load")
-        
         
         let view = UIView()
         self.view = view
@@ -129,27 +201,27 @@ class SecondViewController : UIViewController, UICollectionViewDelegate, UIColle
         let imageBalao = UIImageView(frame: CGRect(x: 194, y:47.52, width: 486.8, height: 142.5))
         imageBalao.image = UIImage(named: "balao.png")
         
-        let missao1 = UILabel()
+        
         missao1.frame = CGRect(x: 384, y: 61, width: 120, height: 30)
-        missao1.text = "Missão 1"
+        missao1.text = dados[posicao].number
         missao1.textColor = #colorLiteral(red: 0.0862745098, green: 0.1450980392, blue: 0.4117647059, alpha: 1)
         missao1.font = UIFont.systemFont(ofSize: 25)
         missao1.font = UIFont(name: "SF Compact Display", size: 25)
         
-        let textomissao1 = UILabel()
+        
         textomissao1.frame = CGRect(x: 240, y: 97, width: 430, height: 72)
-        textomissao1.text = "Encontre a pessoa responsável por transformar \no roteiro em vídeo através de cãmeras, lentes \ne iluminação."
+        textomissao1.text = dados[posicao].text
         textomissao1.numberOfLines = 3
         textomissao1.textColor = #colorLiteral(red: 0.0862745098, green: 0.1450980392, blue: 0.4117647059, alpha: 1)
         textomissao1.font = UIFont.systemFont(ofSize: 19, weight: UIFont.Weight.semibold)
         
-        let buttonCarta = UIButton()
-        buttonCarta.frame = CGRect(x: 87, y: 277, width: 273, height: 321)
-        
-        let imageButtonCarta = UIImage(named: "carta.png")
-        buttonCarta.setImage(imageButtonCarta, for: .normal)
-        
-        buttonCarta.addTarget(self, action: #selector(SecondViewController.touchedButton), for: .touchUpInside)
+//        let buttonCarta = UIButton()
+//        buttonCarta.frame = CGRect(x: 87, y: 277, width: 273, height: 321)
+//
+//        let imageButtonCarta = UIImage(named: "carta.png")
+//        buttonCarta.setImage(imageButtonCarta, for: .normal)
+//
+//        buttonCarta.addTarget(self, action: #selector(SecondViewController.touchedButton), for: .touchUpInside)
         
         
         //ColectionView
@@ -181,8 +253,8 @@ class SecondViewController : UIViewController, UICollectionViewDelegate, UIColle
 class ThirdViewController: UIViewController {
     
     override func loadView() {
-    let view = UIView()
-    view.backgroundColor = .white
+        let view = UIView()
+        view.backgroundColor = .white
         
         let imgBackground = UIImageView(frame: CGRect(x: 0, y: 0, width: 750, height: 1024))
         imgBackground.image = UIImage(imageLiteralResourceName: "vitoria.png")
@@ -221,22 +293,22 @@ class ThirdViewController: UIViewController {
         view.addSubview(labelConfirmar)
         
         self.view = view
-             
-         }
+        
+    }
     
-        @IBAction func touchedButtonConfirmar() {
-               print("tocou botão confirmar")
-            let vc = FourthViewController(screenType: .other(width: 750, height: 1024), isPortrait: true)
-            self.navigationController?.pushViewController(vc, animated: true)
-           }
+    @IBAction func touchedButtonConfirmar() {
+        print("tocou botão confirmar")
+        let vc = FourthViewController(screenType: .other(width: 750, height: 1024), isPortrait: true)
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
     
 }
 
 class FourthViewController: UIViewController {
     
     override func loadView() {
-       let view = UIView()
-       view.backgroundColor = .white
+        let view = UIView()
+        view.backgroundColor = .white
         
         let imgBackground = UIImageView(frame: CGRect(x: 0, y: 0, width: 750, height: 1024))
         imgBackground.image = UIImage(imageLiteralResourceName: "film.png")
@@ -275,13 +347,13 @@ class FourthViewController: UIViewController {
         
         self.view = view
         
-             }
-        
-            @IBAction func touchedButtonRecomecar() {
-                   print("tocou botão recomeçar")
-                let vc = FirstViewController(screenType: .other(width: 750, height: 1024), isPortrait: true)
-                self.navigationController?.pushViewController(vc, animated: true)
-               }
+    }
+    
+    @IBAction func touchedButtonRecomecar() {
+        print("tocou botão recomeçar")
+        let vc = FirstViewController(screenType: .other(width: 750, height: 1024), isPortrait: true)
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
 }
 
 // Present the view controller in the Live View window
@@ -299,5 +371,5 @@ let vc = FirstViewController(screenType: .other(width: 750, height: 1024) , isPo
 let navigationController = UINavigationController(screenType: .other(width: 750, height: 1024) , isPortrait: true)
 navigationController.pushViewController(vc, animated: true)
 navigationController.navigationBar.isHidden = true
-PlaygroundPage.current.liveView = navigationController.scale(to: 0.4)
+PlaygroundPage.current.liveView = navigationController.scale(to: 0.6)
 
