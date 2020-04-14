@@ -17,7 +17,7 @@ class FirstViewController : UIViewController {
         print("tocou botão dirigir filme")
         let vc = SecondViewController(screenType: .other(width: 750, height: 1024), isPortrait: true)
         navigationController?.pushViewController(vc, animated: true)
-    
+        
         
     }
     
@@ -55,25 +55,28 @@ class FirstViewController : UIViewController {
         view.addSubview(textoInicial2)
         view.addSubview(textoInicial)
         
-    
+        
         self.view = view
         
         
     }
     
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        UIView.animate(withDuration: 1.2, animations: {
+            self.textoInicial.frame.origin.y = 50
+        }, completion:{ finished in UIView.animate(withDuration: 0.9, animations: {
+            self.textoInicial2.frame.origin.y = 165
+        })})
         
-         override func viewDidAppear(_ animated: Bool) {
-            super.viewDidAppear(animated)
-           UIView.animate(withDuration: 2, animations: {
-                 self.textoInicial.frame.origin.y = 50
-           }, completion:{ finished in UIView.animate(withDuration: 3, animations: {
-                self.textoInicial2.frame.origin.y = 165
-           })})
-           
-            self.view.layoutIfNeeded()
-                
-            }
+       
+        
+        
+        self.view.layoutIfNeeded()
+        
     }
+}
 
 class SecondViewController : UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
@@ -102,11 +105,11 @@ class SecondViewController : UIViewController, UICollectionViewDelegate, UIColle
         cell.labelCareer.isHidden = true
         cell.imageCareer.isHidden = true
         
-//        if firstRound {
-//            cell.labelCareer.isHidden = true
-//            cell.imageCareer.isHidden = true
-//            cell.checkView.isHidden = true
-//        }
+        //        if firstRound {
+        //            cell.labelCareer.isHidden = true
+        //            cell.imageCareer.isHidden = true
+        //            cell.checkView.isHidden = true
+        //        }
         
         //        cell.addTarget(self, action: #selector(virarCarta), for: .touchUpInside)
         //        self.view.frame = CGRect(x: career.x, career.y: y, width: 273, height: 321)
@@ -125,53 +128,69 @@ class SecondViewController : UIViewController, UICollectionViewDelegate, UIColle
             fatalError("nao foi possivel acessar a celula")
         }
         
-//        cell.imageCareer.image = UIImage(named: career.image)
-//        cell.labelCareer.text = career.name
+        //        cell.imageCareer.image = UIImage(named: career.image)
+        //        cell.labelCareer.text = career.name
         virarCarta(celula: cell)
         //collectionView.reloadItems(at: [indexPath])
     }
     func virarCarta(celula: Carta){
+        
         let carta = celula
+        
         if carta.isFacingDown {
-            carta.view.setImage(carta.backgroundChosen, for: .normal)
+            
+            UIView.transition(with: celula, duration: 0.9, options: [.transitionFlipFromRight, .curveEaseOut], animations:{carta.view.setImage(carta.backgroundChosen, for: .normal)}                 )
+            
+            
+//            carta.view.setImage(carta.backgroundChosen, for: .normal)
             carta.labelCareer.isHidden = false
             carta.imageCareer.isHidden = false
             carta.isFacingDown = false
             
         } else {
             if (carta.labelCareer.text == carreira){
+                
+                UIView.transition(with: celula, duration: 1.1, options: [.transitionFlipFromRight, .curveEaseOut], animations: { carta.labelCareer.font = UIFont(name: "SF Compact Display", size: 25);
+                    carta.labelCareer.frame = CGRect(x: 67, y: 131, width: 155, height: 60);
+                    carta.labelCareer.textAlignment = .left}                 )
+
+                
                 carta.imageCareer.isHidden = true
                 carta.addSubview(carta.checkView)
                 //self.checkView.isHidden = false
                 //carta.labelCareer.isHidden = true
-                carta.labelCareer.font = UIFont(name: "SF Compact Display", size: 25)
-                carta.labelCareer.frame = CGRect(x: 67, y: 131, width: 155, height: 60)
-                carta.labelCareer.textAlignment = .left
                 atualizar()
                 carta.isUserInteractionEnabled = false
                 
+                
             } else {
-                carta.view.setImage(carta.background, for: .normal)
+                
+                UIView.transition(with: celula, duration: 0.9, options: [.transitionFlipFromLeft, .curveEaseOut], animations:{carta.view.setImage(carta.background, for: .normal)}                 )
+                
+//                carta.view.setImage(carta.background, for: .normal)
                 carta.labelCareer.isHidden = true
                 carta.imageCareer.isHidden = true
                 carta.isFacingDown = true
+                
+                
             }
         }
     }
-
+    
     func atualizar(){
         posicao = posicao + 1
         if posicao <= 5 {
             missao1.text = dados[posicao].number
             textomissao1.text = dados[posicao].text
             carreira = dados[posicao].career
-    
+            
+            
         } else {
             let vc = ThirdViewController(screenType: .other(width: 750, height: 1024), isPortrait: true)
             navigationController?.pushViewController(vc, animated: true)
         }
     }
-
+    
     @IBAction func touchedButton() {
         print("apertou na carta")
         
@@ -183,7 +202,7 @@ class SecondViewController : UIViewController, UICollectionViewDelegate, UIColle
     lazy var carreira: String = {
         return self.dados[self.posicao].career
     }()
-
+    
     let missao1 = UILabel()
     let textomissao1 = UILabel()
     
@@ -215,21 +234,22 @@ class SecondViewController : UIViewController, UICollectionViewDelegate, UIColle
         textomissao1.textColor = #colorLiteral(red: 0.0862745098, green: 0.1450980392, blue: 0.4117647059, alpha: 1)
         textomissao1.font = UIFont.systemFont(ofSize: 19, weight: UIFont.Weight.semibold)
         
-//        let buttonCarta = UIButton()
-//        buttonCarta.frame = CGRect(x: 87, y: 277, width: 273, height: 321)
-//
-//        let imageButtonCarta = UIImage(named: "carta.png")
-//        buttonCarta.setImage(imageButtonCarta, for: .normal)
-//
-//        buttonCarta.addTarget(self, action: #selector(SecondViewController.touchedButton), for: .touchUpInside)
+        //        let buttonCarta = UIButton()
+        //        buttonCarta.frame = CGRect(x: 87, y: 277, width: 273, height: 321)
+        //
+        //        let imageButtonCarta = UIImage(named: "carta.png")
+        //        buttonCarta.setImage(imageButtonCarta, for: .normal)
+        //
+        //        buttonCarta.addTarget(self, action: #selector(SecondViewController.touchedButton), for: .touchUpInside)
         
         
         //ColectionView
-        let frame = CGRect(x:0, y:230, width: 750, height: 800)
+        let frame = CGRect(x:0, y:230, width: 730, height: 800)
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.sectionInset = UIEdgeInsets(top: 50, left:60, bottom:60, right:60)
+        layout.sectionInset = UIEdgeInsets(top: 50, left:80, bottom:60, right:60)
         layout.itemSize = CGSize(width: 273, height: 321)
+        layout.minimumLineSpacing = 22
         cartaCollection = UICollectionView(frame: frame, collectionViewLayout: layout)
         cartaCollection?.delegate = self
         cartaCollection?.dataSource = self
@@ -252,6 +272,9 @@ class SecondViewController : UIViewController, UICollectionViewDelegate, UIColle
 
 class ThirdViewController: UIViewController {
     
+    let textovitoria = UILabel()
+    let textovitoria2 = UILabel()
+    
     override func loadView() {
         let view = UIView()
         view.backgroundColor = .white
@@ -259,13 +282,13 @@ class ThirdViewController: UIViewController {
         let imgBackground = UIImageView(frame: CGRect(x: 0, y: 0, width: 750, height: 1024))
         imgBackground.image = UIImage(imageLiteralResourceName: "vitoria.png")
         
-        let textovitoria = UILabel()
+        
         textovitoria.frame = CGRect(x: 80, y: 143, width: 615, height: 53)
         textovitoria.text = "Nós ganhamos o Melhor Filme!"
         textovitoria.textColor = #colorLiteral(red: 0.0862745098, green: 0.1450980392, blue: 0.4117647059, alpha: 1)
         textovitoria.font = UIFont(name: "SF Compact Display", size: 44)
         
-        let textovitoria2 = UILabel()
+        
         textovitoria2.frame = CGRect(x: 130, y: 200, width: 600, height: 120)
         textovitoria2.text = "Não teríamos conseguido sem você.\n               Vamos ver como ficou?"
         textovitoria2.numberOfLines = 3
@@ -293,6 +316,19 @@ class ThirdViewController: UIViewController {
         view.addSubview(labelConfirmar)
         
         self.view = view
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        UIView.animate(withDuration: 1.2, animations: {
+            self.textovitoria.frame.origin.y = 90
+        }, completion:{ finished in UIView.animate(withDuration: 1.2, animations: {
+            self.textovitoria2.frame.origin.y = 160
+        })})
+        
+        
+        self.view.layoutIfNeeded()
         
     }
     

@@ -34,14 +34,14 @@ public class Mission {
     }
     //tem q colocar a localizacao da label missao e label text ok
     public static let shared =
-        [
-            Mission(number: "Missão 1", text: "Encontre a pessoa responsável por transformar \no roteiro em vídeo através de cãmeras, lentes \ne iluminação", career: "Direção de Fotografia"),
-            Mission(number: "Missão 2", text: "Encontre a pessoa responsável por cuidar do \nenredo e das imagens no filme para que não \naconteçam falhas na montagem", career: "Continuísta"),
-            Mission(number: "Missão 3", text: "Encontre a pessoa que ajuda a construir o \npersonagem escrito no roteiro através de \nroupas que serão usadas em cena", career: "Figurinista"),
-            Mission(number: "Missão 4", text: "Encontre a pessoa que cria cenários em estúdio e \nadapta espaços para serem usados no set de \nfilmegem.", career: "Cenografista"),
-            Mission(number: "Missão 5", text: "Encontre a pessoa que produz todos os efeitos \nsonoros e diálogos para gerar cenas dramáticas \ndesejadas pelo diretor.", career: "Trilheira"),
-            Mission(number: "Missão 6", text: "Encontre a pessoa que seleciona as imagens \nde rodagem e edita os efeitos sonoros para \n dar sentido à narrativa", career: "Montadora"),
-    ]
+            [
+                Mission(number: "Missão 1", text: "Encontre a pessoa responsável por transformar \no roteiro em vídeo através de cãmeras, lentes \ne iluminação.", career: "Direção de Fotografia"),
+                Mission(number: "Missão 2", text: "Encontre a pessoa responsável por cuidar do \nenredo e das imagens no filme para que não \naconteçam falhas na montagem.", career: "Continuísta"),
+                Mission(number: "Missão 3", text: "Encontre a pessoa que ajuda a construir o personagem escrito no roteiro através de roupas que serão usadas em cena.", career: "Figurinista"),
+                Mission(number: "Missão 4", text: "Encontre a pessoa que cria cenários em estúdio \ne adapta espaços para serem usados no set \nde filmagem.", career: "Cenografista"),
+                Mission(number: "Missão 5", text: "Encontre a pessoa que produz todos os efeitos \nsonoros e diálogos para gerar cenas dramáticas \ndesejadas pelo diretor.", career: "Trilheira"),
+                Mission(number: "Missão 6", text: "Encontre a pessoa que seleciona as imagens \nde rodagem e edita os efeitos sonoros para \ndar sentido à narrativa.", career: "Montadora"),
+        ]
     
 }
 
