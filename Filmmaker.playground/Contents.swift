@@ -2,6 +2,7 @@
 
 import UIKit
 import PlaygroundSupport
+import WebKit
 
 let cfURL = Bundle.main.url(forResource: "SF-Compact-Display-Bold", withExtension: "otf")! as CFURL
 CTFontManagerRegisterFontsForURL(cfURL, CTFontManagerScope.process, nil)
@@ -340,7 +341,7 @@ class ThirdViewController: UIViewController {
     
 }
 
-class FourthViewController: UIViewController {
+class FourthViewController: UIViewController, WKUIDelegate {
     
     override func loadView() {
         let view = UIView()
@@ -374,12 +375,26 @@ class FourthViewController: UIViewController {
         
         playFilm.addTarget(self, action: #selector(FourthViewController.touchedButtonRecomecar), for: .touchUpInside)
         
+        
+        let webView: WKWebView!
+        let webConfiguration = WKWebViewConfiguration()
+        webConfiguration.ignoresViewportScaleLimits = true
+        webView = WKWebView(frame: CGRect(x: 95, y: 266, width: 565, height: 370), configuration: webConfiguration)
+        webView.uiDelegate = self
+        
+        let videoURL = URL(string: "https://www.youtube.com/embed/OcPRNIycl7U")!
+        
+        let videoRequest = URLRequest(url: videoURL)
+        webView.load(videoRequest)
+        
+        
         view.addSubview(imgBackground)
-        view.addSubview(scene)
+//        view.addSubview(scene)
         view.addSubview(labelRecomecar)
         view.addSubview(buttonRecomecar)
         view.addSubview(labelRecomecar)
         view.addSubview(playFilm)
+        view.addSubview(webView)
         
         self.view = view
         
