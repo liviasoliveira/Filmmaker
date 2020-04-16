@@ -369,6 +369,13 @@ class ThirdViewController: UIViewController {
 
 class FourthViewController: UIViewController {
     
+    var player: AVPlayer!
+    var playerLayer: AVPlayerLayer!
+    
+    public override func viewDidAppear(_ animated: Bool) {
+            player.play()
+    }
+    
     override func loadView() {
         let view = UIView()
         view.backgroundColor = .white
@@ -402,10 +409,10 @@ class FourthViewController: UIViewController {
         playFilm.addTarget(self, action: #selector(FourthViewController.touchedButtonRecomecar), for: .touchUpInside)
         
         
-        var player: AVPlayer!
-        var playerLayer: AVPlayerLayer!
+       // var player: AVPlayer!
+        //var playerLayer: AVPlayerLayer!
         
-        let filePath = Bundle.main.path(forResource: "Repentina", ofType: "mov")
+        let filePath = Bundle.main.path(forResource: "heartBeat", ofType: "mp4")
         let videoURL = URL.init(fileURLWithPath: filePath!)
         player = AVPlayer(url: videoURL as URL)
         playerLayer = AVPlayerLayer(player: player)
@@ -431,7 +438,11 @@ class FourthViewController: UIViewController {
         print("tocou botão recomeçar")
         let vc = FirstViewController(screenType: .other(width: 750, height: 1024), isPortrait: true)
         self.navigationController?.pushViewController(vc, animated: true)
+        player.currentItem?.seek(to: CMTime.zero, completionHandler: nil)
+        player.pause()
     }
+    
+    
 }
 
 // Present the view controller in the Live View window
