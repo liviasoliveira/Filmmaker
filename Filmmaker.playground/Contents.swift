@@ -162,20 +162,26 @@ class SecondViewController : UIViewController, UICollectionViewDelegate, UIColle
                 //missao1.text = carta.erro.text
                 //textomissao1.text = carta.feedback.text
                 
+                //tempo para a carta virar para baixo sozinha
+                let seconds = 4.0
+                DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
+                    // Put your code which should be executed with a delay here
+                    // para casos em que a carta foi virada para baixo antes do tempo da animacao
+                    if carta.isFacingDown == false {
+                        UIView.transition(with: celula, duration: 0.9, options: [.transitionFlipFromLeft, .curveEaseOut], animations:{carta.view.setImage(carta.background, for: .normal)})
+                        
+                        carta.labelCareer.isHidden = true
+                        carta.imageCareer.isHidden = true
+                        carta.isFacingDown = true
+                        self.missao1.text = self.dados[self.posicao].number
+                        self.missao1.frame = CGRect(x: 384, y: 61, width: 120, height: 30)
+                        self.textomissao1.text = self.dados[self.posicao].text
+                        self.textomissao1.font = UIFont.systemFont(ofSize: 19, weight: UIFont.Weight.semibold)
+                        self.missao1.isHidden = false
+                    }
+                    
+                }
                 
-                
-                
-                //                UIView.animate(withDuration: 3.0, delay: 10.0, options: .curveEaseInOut, animations: {
-                //
-                //                }) { _ in
-                //                    UIView.transition(with: celula, duration: 0.9, options: [.transitionFlipFromLeft, .curveEaseOut], animations:{carta.view.setImage(carta.background, for: .normal)}                 )
-                //
-                //                                   carta.labelCareer.isHidden = true
-                //                                   carta.imageCareer.isHidden = true
-                //                                   carta.isFacingDown = true
-                //                    self.textomissao1.text = self.dados[self.posicao].text
-                //                    self.missao1.isHidden = false
-                //                }
             }
             
         } else {
