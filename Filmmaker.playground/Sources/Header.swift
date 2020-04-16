@@ -14,39 +14,6 @@ public class header{
         self.balao.frame =  CGRect(x: 187.16, y: 47.52, width: 486.84, height: 142.56)
         self.titulo.text = "Missão 1"
         self.texto.text = "Encontre a pessoa responsável por transformar o roteiro em vídeo através de cãmeras, lentes e iluminação"
-        
-        //        let header: UIImageView = UIImageView()
-        //        let cartas: UIButton = UIButton()
-        //        let missao: UILabel = UILabel()
-
-        //        var headerMissao1: Header = Header()
-        //        var headerMissao2: Header = Header()
-        //        var headerMissao3: Header = Header()
-        //        var headerMissao4: Header = Header()
-        //        var headerMissao5: Header = Header()
-        //        var headerMissao6: Header = Header()
-        //        var listaHeaders = [Header()]
-        //
-        //        override func loadView(){
-        //            for i in 1...6{
-        
-//        Missao1:"Encontre a pessoa responsável por transformar \no roteiro em vídeo através de cãmeras, lentes \ne iluminação"
-        //Direção de Fotografia
-        
-//        Missao2: "Encontre a pessoa responsável por cuidar do \nenredo e das imagens no filme para que não \naconteçam falhas na montagem"
-        //Continuísta
-        
-//        Missao3: "Encontre a pessoa que ajuda a construir o \npersonagem escrito no roteiro através de \nroupas que serão usadas em cena"
-        //Figurinista
-        
-//        Missao4: "Encontre a pessoa que cria cenários em estúdio e \nadapta espaços para serem usados no set de \nfilmegem.
-        //Cenografista
-        
-//        Missao5: "Encontre a pessoa que produz todos os efeitos \nsonoros e diálogos para gerar cenas dramáticas \ndesejadas pelo diretor."
-        //Trilheira
-        
-//        Missao6: "Encontre a pessoa que seleciona as imagens \nde rodagem e edita os efeitos sonoros para \n dar sentido à narrativa"
-        //Montadora
-        
+                
     }
 }

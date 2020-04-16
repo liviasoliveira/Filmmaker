@@ -2,7 +2,6 @@
 
 import UIKit
 import PlaygroundSupport
-import WebKit
 import AVKit
 import AVFoundation
 
@@ -109,14 +108,6 @@ class SecondViewController : UIViewController, UICollectionViewDelegate, UIColle
         cell.labelCareer.isHidden = true
         cell.imageCareer.isHidden = true
         
-        //        if firstRound {
-        //            cell.labelCareer.isHidden = true
-        //            cell.imageCareer.isHidden = true
-        //            cell.checkView.isHidden = true
-        //        }
-        
-        //        cell.addTarget(self, action: #selector(virarCarta), for: .touchUpInside)
-        //        self.view.frame = CGRect(x: career.x, career.y: y, width: 273, height: 321)
         
         return cell
     }
@@ -126,16 +117,13 @@ class SecondViewController : UIViewController, UICollectionViewDelegate, UIColle
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        //firstRound = false
-        //let career = Career.shared[indexPath.row]
+        
         guard let cell = collectionView.cellForItem(at: indexPath) as? Carta else{
             fatalError("nao foi possivel acessar a celula")
         }
         
-        //        cell.imageCareer.image = UIImage(named: career.image)
-        //        cell.labelCareer.text = career.name
         virarCarta(celula: cell)
-        //collectionView.reloadItems(at: [indexPath])
+        
     }
     func virarCarta(celula: Carta){
         
@@ -146,21 +134,16 @@ class SecondViewController : UIViewController, UICollectionViewDelegate, UIColle
             UIView.transition(with: celula, duration: 0.9, options: [.transitionFlipFromRight, .curveEaseOut], animations:{carta.view.setImage(carta.backgroundChosen, for: .normal)}                 )
             
             
-            //            carta.view.setImage(carta.backgroundChosen, for: .normal)
             carta.labelCareer.isHidden = false
             carta.imageCareer.isHidden = false
             carta.isFacingDown = false
             
             if (carta.labelCareer.text != carreira) {
-                //missao1.isHidden = true
+                
                 missao1.text = carta.erro.text
                 missao1.frame = CGRect(x: 240, y: 69, width: 330, height: 30)
                 textomissao1.text = carta.feedback.text
                 textomissao1.font = UIFont.systemFont(ofSize: 22, weight: UIFont.Weight.semibold)
-                //print(carta.feedback.text)
-                
-                //missao1.text = carta.erro.text
-                //textomissao1.text = carta.feedback.text
                 
                 //tempo para a carta virar para baixo sozinha
                 let seconds = 4.0
@@ -244,7 +227,7 @@ class SecondViewController : UIViewController, UICollectionViewDelegate, UIColle
     
     let dados: [Mission] = Mission.shared
     var posicao = 0
-    //var carreira: String
+    
     lazy var carreira: String = {
         return self.dados[self.posicao].career
     }()
@@ -286,16 +269,6 @@ class SecondViewController : UIViewController, UICollectionViewDelegate, UIColle
         textomissao1.font = UIFont.systemFont(ofSize: 19, weight: UIFont.Weight.semibold)
         
         
-        
-        //        let buttonCarta = UIButton()
-        //        buttonCarta.frame = CGRect(x: 87, y: 277, width: 273, height: 321)
-        //
-        //        let imageButtonCarta = UIImage(named: "carta.png")
-        //        buttonCarta.setImage(imageButtonCarta, for: .normal)
-        //
-        //        buttonCarta.addTarget(self, action: #selector(SecondViewController.touchedButton), for: .touchUpInside)
-        
-        
         //ColectionView
         let frame = CGRect(x:0, y:230, width: 730, height: 800)
         let layout = UICollectionViewFlowLayout()
@@ -316,7 +289,7 @@ class SecondViewController : UIViewController, UICollectionViewDelegate, UIColle
         view.addSubview(imageBalao)
         view.addSubview(missao1)
         view.addSubview(textomissao1)
-        //        view.addSubview(buttonCarta)
+        
         self.view = view
         print ("Chegou no fim da load view da SecondView")
         
@@ -378,7 +351,7 @@ class ThirdViewController: UIViewController {
             self.textovitoria.frame.origin.y = 120
         }, completion:{ finished in UIView.animate(withDuration: 1, delay: 0, options: .curveEaseOut,   animations: {
             self.textovitoria2.textColor = #colorLiteral(red: 0.0862745098, green: 0.1450980392, blue: 0.4117647059, alpha: 1)
-            //self.textovitoria2.frame.origin.y = 160
+            
         })})
         
         
@@ -394,7 +367,7 @@ class ThirdViewController: UIViewController {
     
 }
 
-class FourthViewController: UIViewController, WKUIDelegate {
+class FourthViewController: UIViewController {
     
     override func loadView() {
         let view = UIView()
@@ -429,17 +402,6 @@ class FourthViewController: UIViewController, WKUIDelegate {
         playFilm.addTarget(self, action: #selector(FourthViewController.touchedButtonRecomecar), for: .touchUpInside)
         
         
-        //        let webView: WKWebView!
-        //        let webConfiguration = WKWebViewConfiguration()
-        //        webConfiguration.ignoresViewportScaleLimits = true
-        //        webView = WKWebView(frame: CGRect(x: 95, y: 266, width: 565, height: 370), configuration: webConfiguration)
-        //        webView.uiDelegate = self
-        //
-        //        let videoURL = URL(string: "https://www.youtube.com/embed/OcPRNIycl7U")!
-        //
-        //        let videoRequest = URLRequest(url: videoURL)
-        //        webView.load(videoRequest)
-        
         var player: AVPlayer!
         var playerLayer: AVPlayerLayer!
         
@@ -451,16 +413,14 @@ class FourthViewController: UIViewController, WKUIDelegate {
         playerLayer.videoGravity = .resize
         player.play()
         
-        
+
         
         
         view.addSubview(imgBackground)
-        //        view.addSubview(scene)
         view.addSubview(labelRecomecar)
         view.addSubview(buttonRecomecar)
         view.addSubview(labelRecomecar)
         view.addSubview(playFilm)
-        //        view.addSubview(webView)
         view.layer.addSublayer(playerLayer)
         
         self.view = view
