@@ -3,6 +3,8 @@
 import UIKit
 import PlaygroundSupport
 import WebKit
+import AVKit
+import AVFoundation
 
 let cfURL = Bundle.main.url(forResource: "SF-Compact-Display-Bold", withExtension: "otf")! as CFURL
 CTFontManagerRegisterFontsForURL(cfURL, CTFontManagerScope.process, nil)
@@ -11,7 +13,7 @@ CTFontManagerRegisterFontsForURL(cfURL, CTFontManagerScope.process, nil)
 class FirstViewController : UIViewController {
     
     let textoInicial = UILabel()
-    let textoInicial2 = UILabel()
+    var textoInicial2 = UILabel()
     
     
     @IBAction func touchedButtonPlay() {
@@ -45,10 +47,11 @@ class FirstViewController : UIViewController {
         textoInicial.font = UIFont(name: "SF Compact Display", size: 30)
         
         
-        textoInicial2.frame = CGRect(x: 80, y: 190, width: 400, height: 180)
+        textoInicial2.frame = CGRect(x: 80, y: 165, width: 400, height: 180)
         textoInicial2.text = "Mas preciso de sua ajuda \npara montar uma equipe.\nVocê pode dirigir esse \nfilme?"
         textoInicial2.numberOfLines = 4
-        textoInicial2.textColor = #colorLiteral(red: 0.0862745098, green: 0.1450980392, blue: 0.4117647059, alpha: 1)
+        textoInicial2.textColor = #colorLiteral(red: 0.0862745098, green: 0.1450980392, blue: 0.4117647059, alpha: 0)
+        
         textoInicial2.font = UIFont.systemFont(ofSize: 27, weight: UIFont.Weight.semibold)
         
         view.addSubview(telaInicial)
@@ -65,13 +68,11 @@ class FirstViewController : UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        UIView.animate(withDuration: 1.2, animations: {
-            self.textoInicial.frame.origin.y = 50
-        }, completion:{ finished in UIView.animate(withDuration: 0.9, animations: {
-            self.textoInicial2.frame.origin.y = 165
+        UIView.animate(withDuration: 2, delay: 0 , options: .curveEaseOut, animations: {
+            self.textoInicial.frame.origin.y = 40
+        }, completion:{ finished in UIView.animate(withDuration: 0.9, delay: 3, options: .curveEaseOut,   animations: {
+            self.textoInicial2.textColor = #colorLiteral(red: 0.0862745098, green: 0.1450980392, blue: 0.4117647059, alpha: 1)
         })})
-        
-       
         
         
         self.view.layoutIfNeeded()
@@ -103,6 +104,8 @@ class SecondViewController : UIViewController, UICollectionViewDelegate, UIColle
         
         cell.imageCareer.image = UIImage(named: career.image)
         cell.labelCareer.text = career.name
+        cell.erro.text = career.erro
+        cell.feedback.text = career.feedback
         cell.labelCareer.isHidden = true
         cell.imageCareer.isHidden = true
         
@@ -143,10 +146,37 @@ class SecondViewController : UIViewController, UICollectionViewDelegate, UIColle
             UIView.transition(with: celula, duration: 0.9, options: [.transitionFlipFromRight, .curveEaseOut], animations:{carta.view.setImage(carta.backgroundChosen, for: .normal)}                 )
             
             
-//            carta.view.setImage(carta.backgroundChosen, for: .normal)
+            //            carta.view.setImage(carta.backgroundChosen, for: .normal)
             carta.labelCareer.isHidden = false
             carta.imageCareer.isHidden = false
             carta.isFacingDown = false
+            
+            if (carta.labelCareer.text != carreira) {
+                //missao1.isHidden = true
+                missao1.text = carta.erro.text
+                missao1.frame = CGRect(x: 240, y: 69, width: 330, height: 30)
+                textomissao1.text = carta.feedback.text
+                textomissao1.font = UIFont.systemFont(ofSize: 22, weight: UIFont.Weight.semibold)
+                //print(carta.feedback.text)
+                
+                //missao1.text = carta.erro.text
+                //textomissao1.text = carta.feedback.text
+                
+                
+                
+                
+                //                UIView.animate(withDuration: 3.0, delay: 10.0, options: .curveEaseInOut, animations: {
+                //
+                //                }) { _ in
+                //                    UIView.transition(with: celula, duration: 0.9, options: [.transitionFlipFromLeft, .curveEaseOut], animations:{carta.view.setImage(carta.background, for: .normal)}                 )
+                //
+                //                                   carta.labelCareer.isHidden = true
+                //                                   carta.imageCareer.isHidden = true
+                //                                   carta.isFacingDown = true
+                //                    self.textomissao1.text = self.dados[self.posicao].text
+                //                    self.missao1.isHidden = false
+                //                }
+            }
             
         } else {
             if (carta.labelCareer.text == carreira){
@@ -154,7 +184,7 @@ class SecondViewController : UIViewController, UICollectionViewDelegate, UIColle
                 UIView.transition(with: celula, duration: 1.1, options: [.transitionFlipFromRight, .curveEaseOut], animations: { carta.labelCareer.font = UIFont(name: "SF Compact Display", size: 25);
                     carta.labelCareer.frame = CGRect(x: 67, y: 131, width: 155, height: 60);
                     carta.labelCareer.textAlignment = .left}                 )
-
+                
                 
                 carta.imageCareer.isHidden = true
                 carta.addSubview(carta.checkView)
@@ -162,16 +192,22 @@ class SecondViewController : UIViewController, UICollectionViewDelegate, UIColle
                 //carta.labelCareer.isHidden = true
                 atualizar()
                 carta.isUserInteractionEnabled = false
+                missao1.isHidden = false
+                
                 
                 
             } else {
                 
                 UIView.transition(with: celula, duration: 0.9, options: [.transitionFlipFromLeft, .curveEaseOut], animations:{carta.view.setImage(carta.background, for: .normal)}                 )
                 
-//                carta.view.setImage(carta.background, for: .normal)
                 carta.labelCareer.isHidden = true
                 carta.imageCareer.isHidden = true
                 carta.isFacingDown = true
+                missao1.text = dados[posicao].number
+                missao1.frame = CGRect(x: 384, y: 61, width: 120, height: 30)
+                textomissao1.text = dados[posicao].text
+                textomissao1.font = UIFont.systemFont(ofSize: 19, weight: UIFont.Weight.semibold)
+                missao1.isHidden = false
                 
                 
             }
@@ -186,11 +222,14 @@ class SecondViewController : UIViewController, UICollectionViewDelegate, UIColle
             carreira = dados[posicao].career
             
             
+            
         } else {
             let vc = ThirdViewController(screenType: .other(width: 750, height: 1024), isPortrait: true)
             navigationController?.pushViewController(vc, animated: true)
         }
     }
+    
+    
     
     @IBAction func touchedButton() {
         print("apertou na carta")
@@ -203,6 +242,9 @@ class SecondViewController : UIViewController, UICollectionViewDelegate, UIColle
     lazy var carreira: String = {
         return self.dados[self.posicao].career
     }()
+    
+    let erros: [Erro] = Erro.shared
+    
     
     let missao1 = UILabel()
     let textomissao1 = UILabel()
@@ -229,11 +271,15 @@ class SecondViewController : UIViewController, UICollectionViewDelegate, UIColle
         missao1.font = UIFont(name: "SF Compact Display", size: 25)
         
         
+        
+        
         textomissao1.frame = CGRect(x: 240, y: 97, width: 430, height: 72)
         textomissao1.text = dados[posicao].text
         textomissao1.numberOfLines = 3
         textomissao1.textColor = #colorLiteral(red: 0.0862745098, green: 0.1450980392, blue: 0.4117647059, alpha: 1)
         textomissao1.font = UIFont.systemFont(ofSize: 19, weight: UIFont.Weight.semibold)
+        
+        
         
         //        let buttonCarta = UIButton()
         //        buttonCarta.frame = CGRect(x: 87, y: 277, width: 273, height: 321)
@@ -284,16 +330,16 @@ class ThirdViewController: UIViewController {
         imgBackground.image = UIImage(imageLiteralResourceName: "vitoria.png")
         
         
-        textovitoria.frame = CGRect(x: 80, y: 143, width: 615, height: 53)
+        textovitoria.frame = CGRect(x: 80, y: 180, width: 615, height: 53)
         textovitoria.text = "Nós ganhamos o Melhor Filme!"
         textovitoria.textColor = #colorLiteral(red: 0.0862745098, green: 0.1450980392, blue: 0.4117647059, alpha: 1)
         textovitoria.font = UIFont(name: "SF Compact Display", size: 44)
         
         
-        textovitoria2.frame = CGRect(x: 130, y: 200, width: 600, height: 120)
+        textovitoria2.frame = CGRect(x: 130, y: 180, width: 600, height: 120)
         textovitoria2.text = "Não teríamos conseguido sem você.\n               Vamos ver como ficou?"
         textovitoria2.numberOfLines = 3
-        textovitoria2.textColor = #colorLiteral(red: 0.0862745098, green: 0.1450980392, blue: 0.4117647059, alpha: 1)
+        textovitoria2.textColor = #colorLiteral(red: 0.0862745098, green: 0.1450980392, blue: 0.4117647059, alpha: 0)
         textovitoria2.font = UIFont.systemFont(ofSize: 30, weight: UIFont.Weight.semibold)
         
         let labelConfirmar = UILabel()
@@ -322,10 +368,11 @@ class ThirdViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        UIView.animate(withDuration: 1.2, animations: {
-            self.textovitoria.frame.origin.y = 90
-        }, completion:{ finished in UIView.animate(withDuration: 1.2, animations: {
-            self.textovitoria2.frame.origin.y = 160
+        UIView.animate(withDuration: 1.3, animations: {
+            self.textovitoria.frame.origin.y = 120
+        }, completion:{ finished in UIView.animate(withDuration: 1, delay: 0, options: .curveEaseOut,   animations: {
+            self.textovitoria2.textColor = #colorLiteral(red: 0.0862745098, green: 0.1450980392, blue: 0.4117647059, alpha: 1)
+            //self.textovitoria2.frame.origin.y = 160
         })})
         
         
@@ -376,25 +423,39 @@ class FourthViewController: UIViewController, WKUIDelegate {
         playFilm.addTarget(self, action: #selector(FourthViewController.touchedButtonRecomecar), for: .touchUpInside)
         
         
-        let webView: WKWebView!
-        let webConfiguration = WKWebViewConfiguration()
-        webConfiguration.ignoresViewportScaleLimits = true
-        webView = WKWebView(frame: CGRect(x: 95, y: 266, width: 565, height: 370), configuration: webConfiguration)
-        webView.uiDelegate = self
+        //        let webView: WKWebView!
+        //        let webConfiguration = WKWebViewConfiguration()
+        //        webConfiguration.ignoresViewportScaleLimits = true
+        //        webView = WKWebView(frame: CGRect(x: 95, y: 266, width: 565, height: 370), configuration: webConfiguration)
+        //        webView.uiDelegate = self
+        //
+        //        let videoURL = URL(string: "https://www.youtube.com/embed/OcPRNIycl7U")!
+        //
+        //        let videoRequest = URLRequest(url: videoURL)
+        //        webView.load(videoRequest)
         
-        let videoURL = URL(string: "https://www.youtube.com/embed/OcPRNIycl7U")!
+        var player: AVPlayer!
+        var playerLayer: AVPlayerLayer!
         
-        let videoRequest = URLRequest(url: videoURL)
-        webView.load(videoRequest)
+        let filePath = Bundle.main.path(forResource: "Repentina", ofType: "mov")
+        let videoURL = URL.init(fileURLWithPath: filePath!)
+        player = AVPlayer(url: videoURL as URL)
+        playerLayer = AVPlayerLayer(player: player)
+        playerLayer.frame = CGRect(x: 95, y: 266, width: 565, height: 370)
+        playerLayer.videoGravity = .resize
+        player.play()
+        
+        
         
         
         view.addSubview(imgBackground)
-//        view.addSubview(scene)
+        //        view.addSubview(scene)
         view.addSubview(labelRecomecar)
         view.addSubview(buttonRecomecar)
         view.addSubview(labelRecomecar)
         view.addSubview(playFilm)
-        view.addSubview(webView)
+        //        view.addSubview(webView)
+        view.layer.addSublayer(playerLayer)
         
         self.view = view
         

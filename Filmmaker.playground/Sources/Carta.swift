@@ -1,23 +1,26 @@
 import Foundation
 import UIKit
 
-public class Error {
-    public let error: String
+public class Erro {
+    public let erro: String
     public let career: String
+    public let feedback: String
     
-    public init(error: String, career: String){
-        self.error = error
+    public init(erro: String, career: String, feedback:String){
+        self.erro = erro
         self.career = career
+        self.feedback = feedback
     }
     
-    public let shared =
+    public static let shared =
         [
-            Error(error: "Você gostou dela? \nAcho que essa não é a pessoa que /nestamos procurando!", career: "Direção de Fotografia"),
-            Error(error: "Tente outra vez! \nVamos precisar de um continuísta /nem outro momento.", career: "Continuísta"),
-            Error(error: "Figurino sempre é bom! \nMas vamos deixá-lo para a próxima /netapa.", career: "Figurinista"),
-            Error(error: "Você já fez cenários? \nVamos precisar de um cenógrafo /nem outro momento.", career: "Cenografista"),
-            Error(error: "Música para viver! \nMas acho que essa não é a pessoa /nque estamos procurando!", career: "Trilheria"),
-            Error(error: "Você também edita? \nMas acho melhor deixarmos para /na próxima etapa.", career: "Montadora"),
+            Erro(erro: "Você já fez cenários?", career: "Cenografista", feedback: "Vamos precisar de um cenógrafo /nem outro momento."),
+            Erro(erro: "Tente outra vez!", career: "Continuísta", feedback: "Vamos precisar de um continuísta em outro momento."),
+            Erro(erro: "Você também edita?", career: "Montadora", feedback: "Mas acho melhor deixarmos para a próxima etapa."),
+            Erro(erro: "Você gostou dela? ", career: "Direção de Fotografia", feedback: "Acho que essa não é a pessoa que estamos procurando!"),
+            Erro(erro: "Figurino sempre é bom!", career: "Figurinista", feedback: "Mas vamos deixá-lo para a próxima etapa."),
+            Erro(erro: "Música para viver!", career: "Trilheria", feedback: "Mas acho que essa não é a pessoa que estamos procurando!"),
+            
     ]
 }
 
@@ -53,25 +56,25 @@ public class Mission {
 public class Career{
     public let name: String
     public let image: String
-    public let x: CGFloat
-    public let y: CGFloat
+    public let erro: String
+    public let feedback: String
     
-    public init(career: String, image: String, x: CGFloat, y: CGFloat){
+    public init(career: String, image: String, erro: String, feedback:String){
         self.name = career
         self.image = image
-        self.x = x
-        self.y = y
-        
+        self.erro = erro
+        self.feedback = feedback
+   
     }
     
     public static let shared =
         [
-            Career(career: "Cenografista", image: "cenografista.png", x: 87, y: 277),
-            Career(career: "Continuísta", image: "continuista.png", x: 411, y: 277),
-            Career(career: "Montadora", image: "montadora.png", x: 87, y: 622),
-            Career(career: "Direção de Fotografia", image: "diretorDeFotografia.png", x: 411, y: 622),
-            Career(career: "Figurinista", image: "figurinista.png", x: 87, y: 967),
-            Career(career: "Trilheira", image: "trilheira.png", x: 411, y: 967),
+            Career(career: "Cenografista", image: "cenografista.png", erro: "Você já fez cenários?", feedback: "Vamos precisar de um cenógrafo em outro momento."),
+            Career(career: "Continuísta", image: "continuista.png", erro: "Tente outra vez!", feedback: "Vamos precisar de um continuísta em outro momento."),
+            Career(career: "Montadora", image: "montadora.png", erro: "Você também edita?", feedback: "Mas acho melhor deixarmos para a próxima etapa."),
+            Career(career: "Direção de Fotografia", image: "diretorDeFotografia.png", erro: "Você gostou dela? ", feedback: "Acho que essa não é a pessoa que estamos procurando!"),
+            Career(career: "Figurinista", image: "figurinista.png", erro: "Figurino sempre é bom!", feedback: "Mas vamos deixá-lo para a próxima etapa."),
+            Career(career: "Trilheira", image: "trilheira.png", erro: "Música para viver!", feedback: "Mas acho que essa não é a pessoa que estamos procurando!"),
     ]
 }
 
@@ -85,6 +88,8 @@ public class Carta: UICollectionViewCell {
     public var labelCareer: UILabel = UILabel()
     public var imageCareer: UIImageView = UIImageView()
     public var checkView: UIImageView = UIImageView()
+    public var erro: UILabel = UILabel()
+    public var feedback: UILabel = UILabel()
     
     
     public override init(frame: CGRect) {
@@ -106,40 +111,11 @@ public class Carta: UICollectionViewCell {
         self.addSubview(UIImageView(image:background))
         self.addSubview(labelCareer)
         self.addSubview(imageCareer)
-        //self.addSubview(checkView)
-        
-        //        self.bringSubviewToFront(contentView)
-        //        self.contentView.bringSubviewToFront(imageCareer)
-        //        self.contentView.bringSubviewToFront(labelCareer)
-        //        self.contentView.bringSubviewToFront(checkView)
-        
+
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-//    public func virarCarta(){
-//        if isFacingDown {
-//            self.view.setImage(backgroundChosen, for: .normal)
-//            self.labelCareer.isHidden = false
-//            self.imageCareer.isHidden = false
-//            isFacingDown = false
-//            
-//        } else {
-//            if isCorrect{
-//                self.imageCareer.isHidden = true
-//                self.addSubview(checkView)
-//                //self.checkView.isHidden = false
-//                self.labelCareer.isHidden = true
-//                
-//            } else {
-//                self.view.setImage(background, for: .normal)
-//                self.labelCareer.isHidden = true
-//                self.imageCareer.isHidden = true
-//                isFacingDown = true
-//            }
-//        }
-//    }
     
 }
